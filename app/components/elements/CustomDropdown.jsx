@@ -37,7 +37,9 @@ export default function CustomDropdown({ name, children, ...rest }) {
         </svg>
         <span className="flex-1 ml-3 text-left whitespace-nowrap">{name}</span>
         <svg
-          className="w-6 h-6"
+          className={`w-6 h-6 transition duration-300 ${
+            isOpen && "rotate-180"
+          }`}
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"

@@ -4,6 +4,7 @@ import { FiArchive } from "react-icons/fi";
 import { useRouter } from "next/router";
 import Logo from "@/app/components/elements/Logo";
 import LogoDashboard from "@/app/components/elements/LogoDashboard";
+import Link from "next/link";
 
 const bg = {
   visible: {
@@ -111,8 +112,8 @@ export default function DashboardLayout({ children }) {
             {/*    <span className="ml-3">Светлая тема</span>*/}
             {/*  </a>*/}
             {/* </div>*/}
-            <a
-              href="/profile"
+            <Link
+              href="/dashboard/profile"
               className="flex items-center justify-between w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
             >
               <div className="flex flex-col">
@@ -122,7 +123,7 @@ export default function DashboardLayout({ children }) {
               <div className="rounded-full flex items-center justify-center h-[44px] w-[44px] bg-gray-300 darkbg-pink-50 bg-opacity-40">
                 <p>ED</p>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </aside>

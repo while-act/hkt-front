@@ -1,18 +1,21 @@
-import { Button, Checkbox, Label } from "flowbite-react";
-import { useForm } from "react-hook-form";
-import Link from "next/link";
-import AuthLayout from "@/app/components/layouts/AuthLayout";
-import { FormGroup } from "@/app/components/modules/FormGroup";
+import { Button, Checkbox, Label } from 'flowbite-react';
+import { useForm } from 'react-hook-form';
+import Link from 'next/link';
+import AuthLayout from '@/app/components/layouts/AuthLayout';
+import { FormGroup } from '@/app/components/modules/FormGroup';
+import { authSignIn } from '@/api/services';
 
 export default function LoginPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+  } = useForm({ mode: 'onSubmit' });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const user = await authSignIn(data);
+    const res = await user.json();
+    console.log(res);
   };
 
   return (
@@ -29,11 +32,11 @@ export default function LoginPage() {
           conditions={{
             required: {
               value: true,
-              message: "Поле Email адрес не заполнено",
+              message: 'Поле Email адрес не заполнено',
             },
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: "Entered value does not match email format",
+              message: 'Entered value does not match email format',
             },
           }}
         />
@@ -46,15 +49,15 @@ export default function LoginPage() {
           conditions={{
             required: {
               value: true,
-              message: "Поле Пароль не заполнено",
+              message: 'Поле Пароль не заполнено',
             },
             minLength: {
               value: 8,
-              message: "Должен содержать более 8 символов",
+              message: 'Должен содержать более 8 символов',
             },
             pattern: {
               value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-              message: "Пароль должнен содержать заглавные символы и цифры.",
+              message: 'Пароль должнен содержать заглавные символы и цифры.',
             },
           }}
           labelTools={
@@ -72,7 +75,7 @@ export default function LoginPage() {
         <div className="flex flex-col gap-[4px]">
           <Button type="submit">Войти</Button>
           <span className="text-center dark:text-gray-300">
-            Нет аккаунта?{" "}
+            Нет аккаунта?{' '}
             <Link href="/register" className="text-blue-600 hover:underline">
               Создать
             </Link>

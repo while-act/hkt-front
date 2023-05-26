@@ -45,8 +45,8 @@ export default function LoginPage() {
   };
 
   return (
-    <AuthLayout wrapperClassName=" sm:mt-0">
-      <p className="text-[32px] dark:text-white mb-[15px]">Регистрация</p>
+    <AuthLayout>
+      <p className="text-[32px] dark:text-white mb-[20px]">Регистрация</p>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <FormGroup
           htmlFor="name"
@@ -60,19 +60,6 @@ export default function LoginPage() {
             },
           }}
           errors={errors.name}
-        />
-        <FormGroup
-          htmlFor="surname"
-          placeholder="Иванов"
-          label="Фамилия"
-          register={register}
-          conditions={{
-            required: {
-              value: true,
-              message: "Поле Фамилия должно быть заполнено",
-            },
-          }}
-          errors={errors.surname}
         />
         <FormGroup
           htmlFor="email"
@@ -91,23 +78,6 @@ export default function LoginPage() {
             },
           }}
           errors={errors.email}
-        />
-        <FormGroup
-          htmlFor="inn"
-          placeholder="0000000000"
-          label="ИНН"
-          register={register}
-          conditions={{
-            required: {
-              value: true,
-              message: "Поле ИНН должно быть заполнено",
-            },
-            pattern: {
-              value: /^\d{10}|\d{12}$/,
-              message: "Не верный формат ИНН",
-            },
-          }}
-          errors={errors.inn}
         />
         <FormGroup
           htmlFor="password"

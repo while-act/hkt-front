@@ -1,5 +1,44 @@
 .wrapper {
   padding: 27px 80px 10px 80px;
+  display: grid;
+  width: 100%;
+}
+
+.title {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 46px;
+  line-height: 100%;
+  text-align: left;
+  color: #FCFCFD;
+  margin-bottom: 60px;
+}
+
+.pointer {
+  background: #2859FF;
+  border-radius: 10px;
+  height: 1px;
+  width: 100%;
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.pointer__line {
+  height: 3px;
+  width: 45px;
+  background: #FCFCFD;
+  border-radius: 10px;
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  top: 155%;
+}
+
+.gapWrapper {
+  display: flex;
+  gap: 36px;
+  margin-left: 20px;
 }
 
 .newCosts {
@@ -9,8 +48,42 @@
   border-radius: 16px;
   text-align: center;
   margin-bottom: 17px;
-  padding: 16px;
-  width: 300px;
+  width: 236px;
+  justify-self: flex-end;
+  height: 50px;
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 120%;
+  color: #D0D5DD;
+}
+
+.wrapperButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  margin-top: 20px;
+}
+
+.selectWrapper {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.buttonSelect {
+  cursor: pointer;font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+  text-align: center;
+  color: #FCFCFD;
+  position: relative;
 }
 
 .next {
@@ -18,7 +91,30 @@
   border: 1px solid #2859FF;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   border-radius: 16px;
-  padding: 16px;
+  height: 50px;
   text-align: center;
   width: 245px;
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 120%;
+  color: #D0D5DD;
+}
+
+.back {
+  background: transparent;
+  border: 1px solid #2859FF;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 16px;
+  height: 50px;
+  text-align: center;
+  width: 245px;
+  color: #2859FF;
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 120%;
+  color: #D0D5DD;
 }

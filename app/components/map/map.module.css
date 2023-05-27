@@ -1,13 +1,29 @@
 .title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 30px;
   color: #fff;
   font-weight: 700;
   font-size: 18px;
-  max-width: 200px;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: #2859FF;
 }
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 50px;
+}
+
+.wrapperText {
+  margin-bottom: 15px;
+}
+
+.description {
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
 
 .info {
   transition: all easy-in-out 0.3s;

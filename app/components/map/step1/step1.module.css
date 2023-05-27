@@ -1,0 +1,70 @@
+.input > div > input {
+  color: #fff;
+  width:  420px ;
+  border: 1px solid rgba(32, 32, 32, 1);
+  border-radius: 16px;
+  background: #0A0A0A;
+  padding: 15px;
+  height: auto;
+  max-height: 50px;
+  color: 'rgba(124, 124, 124, 1)';
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  height: fit-content;
+}
+
+.inputContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.group {
+  display: flex;
+  gap: 10px;
+}
+
+.group > div {
+  color: white;
+}
+
+.radio > div > div > label {
+  color: white;
+}
+
+.mantine-hqx0d1 {
+  align-items: center;
+}
+
+.radio div > div > {
+  align-items:  center;
+}
+
+.table {
+  height: fit-content;
+}
+
+.radio {
+  display: grid;
+  align-items: center;
+}
+
+.radio > div {
+  align-items: center;
+}
+
+.radio > div > div > input {
+  display: flex;
+}
+
+.tr {
+  margin-bottom: 50px;
+}
+
+.importantMessage {
+  color: red;
+}

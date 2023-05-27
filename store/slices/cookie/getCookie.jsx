@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { GET_COOKIE } from '@/api/services';
 
@@ -10,6 +10,7 @@ export const getCookie = createAsyncThunk('getCookie', async () => {
 const initialState = {
   data: null,
   status: 'loading',
+  err: null,
 };
 
 export const getCookieSlice = createSlice({
@@ -23,12 +24,15 @@ export const getCookieSlice = createSlice({
 
     builder.addCase(getCookie.fulfilled, (state, action) => {
       state.data = action.payload;
+      console.log(action.payload, 'cookie');
       state.status = 'success';
     });
 
-    builder.addCase(getCookie.rejected, (state) => {
+    builder.addCase(getCookie.rejected, (state, action) => {
       state.status = 'error';
       state.data = null;
+      state.err = action.payload;
+      console.log(action.payload, 'mem');
     });
   },
 });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// export const API_URL = env.API_URL || 'http://37.230.195.26:3000/';
-export const API_URL = '/api/';
+export const API_URL = 'http://37.230.195.26:3000/api';
+// export const API_URL = '/api/';
 export const DELETE_COOKIE = 'auth/session';
 export const GET_COOKIE = 'auth/session';
 export const SIGNIN = 'auth/sign-in';

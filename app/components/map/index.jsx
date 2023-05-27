@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './map.module.css';
 import MapImage from './MapImage';
+import Step1 from './step1';
 
 const regions = [
   'Troickiy',
@@ -32,13 +33,13 @@ const ruRegions = {
   'Sever-Vostok': 'Северо-Восточный',
 };
 
-export const Map = () => {
+export const Map = ({ step = 0 }) => {
   const mapRef = useRef(null);
   const regionElementsRef = useRef({});
   const [currentRegion, setCurrentRegion] = useState();
   const [activeRegion, setActiveRegion] = useState(false);
   const [idOfRegion, setIdOfRegion] = useState(false);
-  const [title, setTitle] = useState('Вы ещё не выбрали регион для инвестиций!');
+  const [title, setTitle] = useState('Пока не выбрана!');
 
   useEffect(() => {
     const handleMouseOver = (e) => {
@@ -82,7 +83,7 @@ export const Map = () => {
       if (regions.includes(id)) {
         setActiveRegion(true);
         setIdOfRegion(id);
-        setTitle(`Выбранный регион: ${ruRegions[id]}`);
+        setTitle(`${ruRegions[id]}`);
 
         regionElementsRef.current[id].forEach((el) => {
           el.style.fill = '#2859FF';
@@ -121,7 +122,9 @@ export const Map = () => {
       tooltip.style.top = `${y - 50}px`;
       tooltip.style.left = `${x + 20}px`;
     } else {
-      tooltip.style.display = 'none';
+      if (tooltip) {
+        tooltip.style.display = 'none';
+      }
     }
   };
 
@@ -134,11 +137,18 @@ export const Map = () => {
   }, [regions]);
 
   return (
-    <div>
-      <div />
-      <div className={styles.title}>{title}</div>
-      <div className={styles.info}>{currentRegion}</div>
-      <MapImage regions={regions} />
+    <div className={styles.container}>
+      {step === 1 && (
+        <div>
+          <div className={styles.wrapperText}>
+            <div className={styles.description}>Территория расположения производства:</div>
+            <div className={styles.title}>{title}</div>
+          </div>
+          <div className={styles.info}>{currentRegion}</div>
+          <MapImage regions={regions} />
+        </div>
+      )}
+      <Step1 />
     </div>
   );
 };

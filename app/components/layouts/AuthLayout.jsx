@@ -1,12 +1,15 @@
-import { Card } from "flowbite-react";
-import Logo from "@/app/components/elements/Logo";
-import ThemeSwitcher from "@/app/components/elements/ThemeSwitcher";
+import { Card } from 'flowbite-react';
+import Logo from '@/app/components/elements/Logo';
+import ThemeSwitcher from '@/app/components/elements/ThemeSwitcher';
+import Link from 'next/link';
 
 export default function AuthLayout({ children, wrapperClassName }) {
   return (
     <div className="container h-screen relative pt-[25px]">
       <div className="flex w-full item-center justify-between relative z-50">
-        <Logo name="INM" />
+        <Link href="/">
+          <Logo name="INM" />
+        </Link>
         <ThemeSwitcher />
       </div>
       <div

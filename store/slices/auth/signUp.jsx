@@ -3,9 +3,25 @@ import axios from 'axios';
 import { SIGNUP } from '@/api/services';
 
 export const signUp = createAsyncThunk('signUp', async (body) => {
-  const { data } = await axios.post(SIGNUP, {
-    body,
-  });
+  const { data } = await axios.post(
+    SIGNUP,
+    JSON.stringify({
+      biography: "I'd like to relax",
+      city: 'Москва',
+      company: {
+        inn: '7707083893',
+        name: "ООО 'Парк'",
+        website: 'https://www.rusprofile.ru',
+      },
+      country: 'Россия',
+      email: 'myemail@gmail.com',
+      fatherName: 'Ivanovich1',
+      firstName: 'Ivan1',
+      lastName: 'Ivanov',
+      password: 'bob126',
+      position: 'Director',
+    })
+  );
   return data;
 });
 

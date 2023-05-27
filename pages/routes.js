@@ -10,6 +10,9 @@ export const RoutePath = {
   Dashboard: '/dashboard',
   Profile: '/profile',
 
+  // Common paths
+  Costs: '/costs',
+
   // Auth paths
   SignIn: '/login',
   SignUp: '/register',
@@ -21,9 +24,11 @@ export const RoutePath = {
 };
 
 export const routesConfiguration = {
-  // Private routes
   [RoutePath.Home]: {
     scope: ScopeType.PRIVATE,
+  },
+  [RoutePath.Costs]: {
+    scope: ScopeType.COMMON,
   },
   [RoutePath.Profile]: {
     scope: ScopeType.PRIVATE,

@@ -1,18 +1,19 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { FiArchive } from "react-icons/fi";
-import { useRouter } from "next/router";
-import Logo from "@/app/components/elements/Logo";
-import LogoDashboard from "@/app/components/elements/LogoDashboard";
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { FiArchive } from 'react-icons/fi';
+import { useRouter } from 'next/router';
+import Logo from '@/app/components/elements/Logo';
+import LogoDashboard from '@/app/components/elements/LogoDashboard';
+import Link from 'next/link';
 
 const bg = {
   visible: {
     opacity: 1,
-    display: "block",
+    display: 'block',
   },
   hidden: {
     opacity: 0,
-    display: "none",
+    display: 'none',
     transition: {
       display: {
         delay: 0.3,
@@ -31,7 +32,9 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="container">
       <div className="flex items-center w-full justify-between sm:hidden mt-[10px] px-3">
-        <Logo name="INM" />
+        <Link href="/">
+          <Logo name="INM" />
+        </Link>
         <button
           data-drawer-target="sidebar-multi-level-sidebar"
           data-drawer-toggle="sidebar-multi-level-sidebar"
@@ -60,7 +63,7 @@ export default function DashboardLayout({ children }) {
       <aside
         id="sidebar-multi-level-sidebar"
         className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${
-          isOpen ? "transform-none" : "-translate-x-full"
+          isOpen ? 'transform-none' : '-translate-x-full'
         }`}
         aria-label="Sidebar"
       >
@@ -73,8 +76,7 @@ export default function DashboardLayout({ children }) {
               <a
                 href="/"
                 className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 ${
-                  router.pathname === "/dashboard/projects" &&
-                  "dark:bg-gray-600 bg-gray-200"
+                  router.pathname === '/dashboard/projects' && 'dark:bg-gray-600 bg-gray-200'
                 }`}
               >
                 <FiArchive className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
@@ -128,7 +130,7 @@ export default function DashboardLayout({ children }) {
       </aside>
 
       <motion.div
-        initial={{ opacity: 0, display: "none" }}
+        initial={{ opacity: 0, display: 'none' }}
         animate={isOpen ? bg.visible : bg.hidden}
         transition={bg.transition}
         className="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30"

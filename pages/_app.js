@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import { Provider } from 'react-redux';
 import { useEffect } from 'react';
 import { store } from '../store/index';
+import { UserIsAuthLayout } from '@/app/components/layouts/UserIsAuthLayout';
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
@@ -14,7 +15,9 @@ export default function App({ Component, pageProps }) {
   }, []);
   return (
     <Provider store={store}>
-      <Component {...pageProps} />;
+      <UserIsAuthLayout>
+        <Component {...pageProps} />
+      </UserIsAuthLayout>
     </Provider>
   );
 }

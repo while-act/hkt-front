@@ -42,7 +42,7 @@ const Step1 = () => {
         </tr>
         <tr>
           <td>
-            <Select />
+            <SelectMap />
           </td>
         </tr>
       </tbody>

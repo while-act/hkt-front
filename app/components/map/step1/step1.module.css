@@ -1,7 +1,7 @@
 .input > div > input {
   color: #fff;
   width:  420px ;
-  border: 1px solid #202020;
+  border: 1px solid rgba(32, 32, 32, 1);
   border-radius: 16px;
   background: #0A0A0A;
   padding: 15px;

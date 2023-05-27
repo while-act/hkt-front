@@ -3,7 +3,17 @@ import styles from './costsLayout.module.css';
 
 export const CostsLayout = ({ children, step = 0 }) => {
   const [stateForm, setStateForm] = useState({
-    projectName: { name },
+    projectName: { value: '' },
+    form: { value: '' },
+    industry: { value: '' },
+    employeeCount: { value: '' },
+    salary: { value: '' },
+    region: { value: '' },
+    earthSize: { value: '' },
+    constructionSize: { value: '' },
+    bookkeeping: { value: '' },
+    taxes: { value: '' },
+    numberOfOperations: { value: '' },
   });
 
   return (

@@ -33,7 +33,7 @@ const ruRegions = {
   'Sever-Vostok': 'Северо-Восточный',
 };
 
-export const Map = () => {
+export const Map = ({ step = 0 }) => {
   const mapRef = useRef(null);
   const regionElementsRef = useRef({});
   const [currentRegion, setCurrentRegion] = useState();
@@ -122,7 +122,9 @@ export const Map = () => {
       tooltip.style.top = `${y - 50}px`;
       tooltip.style.left = `${x + 20}px`;
     } else {
-      tooltip.style.display = 'none';
+      if (tooltip) {
+        tooltip.style.display = 'none';
+      }
     }
   };
 
@@ -136,14 +138,16 @@ export const Map = () => {
 
   return (
     <div className={styles.container}>
-      <div>
-        <div className={styles.wrapperText}>
-          <div className={styles.description}>Территория расположения производства:</div>
-          <div className={styles.title}>{title}</div>
+      {step === 1 && (
+        <div>
+          <div className={styles.wrapperText}>
+            <div className={styles.description}>Территория расположения производства:</div>
+            <div className={styles.title}>{title}</div>
+          </div>
+          <div className={styles.info}>{currentRegion}</div>
+          <MapImage regions={regions} />
         </div>
-        <div className={styles.info}>{currentRegion}</div>
-        <MapImage regions={regions} />
-      </div>
+      )}
       <Step1 />
     </div>
   );

@@ -11,9 +11,10 @@
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  height: fit-content;
 }
 
 .inputContainer {
@@ -62,4 +63,8 @@
 
 .tr {
   margin-bottom: 50px;
+}
+
+.importantMessage {
+  color: red;
 }

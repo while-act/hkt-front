@@ -9,8 +9,9 @@ export const FormGroup = ({
   conditions,
   type = "text",
   labelTools,
+  className
 }) => (
-  <div>
+  <div className={className}>
     <div className="mb-2 flex items-center justify-between">
       <Label color={errors && "failure"} htmlFor={htmlFor} value={label} />
       {labelTools}

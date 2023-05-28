@@ -1,28 +1,13 @@
 import { Button, Checkbox, Label, TextInput } from 'flowbite-react';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import AuthLayout from '@/app/components/layouts/AuthLayout';
 import { signUp } from '@/store/slices/auth/signUp';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RoutePath } from './routes';
-
-const FormGroup = ({ label, htmlFor, placeholder, errors, register, conditions, type = 'text' }) => (
-  <div>
-    <div className="mb-2 block">
-      <Label color={errors && 'failure'} htmlFor={htmlFor} value={label} />
-    </div>
-    <TextInput
-      id={htmlFor}
-      type={type}
-      placeholder={placeholder}
-      color={errors && 'failure'}
-      {...register(htmlFor, conditions)}
-    />
-    {errors && <p className="text-red-600 leading-4 mt-[4px] text-[14px]">{errors.message}</p>}
-  </div>
-);
+import { FormGroup } from "@/app/components/modules/FormGroup";
 
 export default function LoginPage() {
   const { route, push } = useRouter();
@@ -48,18 +33,52 @@ export default function LoginPage() {
     <AuthLayout>
       <p className="text-[32px] dark:text-white mb-[20px]">Регистрация</p>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <div className="flex w-full flex-col gap-4 sm:flex-row items-center">
+          <FormGroup
+            htmlFor="name"
+            placeholder="Иван"
+            label="Имя"
+            register={register}
+            conditions={{
+              required: {
+                value: true,
+                message: 'Поле Имя должно быть заполнено',
+              },
+            }}
+            errors={errors.name}
+            className="w-full"
+          />
+          <FormGroup
+            htmlFor="name"
+            placeholder="Иванов"
+            label="Фамилия"
+            register={register}
+            conditions={{
+              required: {
+                value: true,
+                message: 'Поле Фамилия должно быть заполнено',
+              },
+            }}
+            errors={errors.name}
+            className="w-full"
+          />
+        </div>
         <FormGroup
-          htmlFor="name"
-          placeholder="Иван"
-          label="Имя"
+          htmlFor="inn"
+          label="ИНН"
+          errors={errors.inn}
+          placeholder="0000000000"
           register={register}
           conditions={{
             required: {
               value: true,
-              message: 'Поле Имя должно быть заполнено',
+              message: "Поле Наименование организации пользователя должно быть заполнено",
             },
+            pattern: {
+              value: /^\d{10}|\d{12}$/,
+              message: "Неверный формат записи ИНН"
+            }
           }}
-          errors={errors.name}
         />
         <FormGroup
           htmlFor="email"

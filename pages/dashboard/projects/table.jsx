@@ -2,13 +2,16 @@ import DashboardLayout from "@/app/components/layouts/DashboardLayout";
 import { Button } from "flowbite-react";
 import { FiEdit, FiEye, FiTrash } from "react-icons/fi";
 import styles from "@/styles/globals.css";
+import Link from "next/link";
 
 export default function Table() {
   return (
     <DashboardLayout>
       <div className="w-full flex justify-between items-center mt-2">
         <p className="text-[24px] font-medium">Все проекты</p>
-        <Button>Создать новый</Button>
+        <Link href="/dashboard/projects/form">
+          <Button>Создать новый</Button>
+        </Link>
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-[20px]">

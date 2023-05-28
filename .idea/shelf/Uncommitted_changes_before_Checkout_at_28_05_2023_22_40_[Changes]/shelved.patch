@@ -1,0 +1,517 @@
+Index: app/components/modules/FormGroup.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Label, TextInput } from \"flowbite-react\";\r\n\r\nexport const FormGroup = ({\r\n  label,\r\n  htmlFor,\r\n  placeholder,\r\n  errors,\r\n  register,\r\n  conditions,\r\n  type = \"text\",\r\n  labelTools,\r\n  className\r\n}) => (\r\n  <div className={className}>\r\n    <div className=\"mb-2 flex items-center justify-between\">\r\n      <Label color={errors && \"failure\"} htmlFor={htmlFor} value={label} />\r\n      {labelTools}\r\n    </div>\r\n    <TextInput\r\n      id={htmlFor}\r\n      type={type}\r\n      placeholder={placeholder}\r\n      color={errors && \"failure\"}\r\n      {...register(htmlFor, conditions)}\r\n    />\r\n    {errors && (\r\n      <p className=\"text-red-600 leading-4 mt-[4px] text-[14px]\">\r\n        {errors.message}\r\n      </p>\r\n    )}\r\n  </div>\r\n);\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/components/modules/FormGroup.jsx b/app/components/modules/FormGroup.jsx
+--- a/app/components/modules/FormGroup.jsx	(revision 77581d14a1df580aca29289ab7b74a265b415b5d)
++++ b/app/components/modules/FormGroup.jsx	(date 1685271896860)
+@@ -1,19 +1,29 @@
+-import { Label, TextInput } from "flowbite-react";
++import { Label, TextInput, Tooltip } from "flowbite-react";
++import { FiHelpCircle } from "react-icons/fi";
+ 
+ export const FormGroup = ({
+-  label,
+-  htmlFor,
+-  placeholder,
+-  errors,
+-  register,
+-  conditions,
+-  type = "text",
+-  labelTools,
+-  className
+-}) => (
++                            label,
++                            htmlFor,
++                            placeholder,
++                            errors,
++                            register,
++                            conditions,
++                            type = "text",
++                            labelTools,
++                            isClue = false,
++                            clueContent = "",
++                            className
++                          }) => (
+   <div className={className}>
+     <div className="mb-2 flex items-center justify-between">
+-      <Label color={errors && "failure"} htmlFor={htmlFor} value={label} />
++      <div className="flex items-center gap-2">
++        <Label color={errors && "failure"} htmlFor={htmlFor} value={label} />
++        {isClue && (
++          <Tooltip content={clueContent}>
++            <FiHelpCircle className="w-3 h-3 mb-[-2px] text-gray-500 cursor-pointer" />
++          </Tooltip>
++        )}
++      </div>
+       {labelTools}
+     </div>
+     <TextInput
+Index: pages/dashboard/projects/form.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import DashboardLayout from \"@/app/components/layouts/DashboardLayout\";\r\nimport { useState } from \"react\";\r\nimport { Card } from \"flowbite-react\";\r\n\r\nexport default function MultistepForm() {\r\n  const [step, setStep] = useState()\r\n\r\n  return (\r\n    <DashboardLayout>\r\n      <Card>\r\n        <div className=\"flex items-center justify-between\">\r\n          <div className=\"flex flex-col gap-2\">\r\n            <p>Шаг: {step}</p>\r\n            <p></p>\r\n          </div>\r\n        </div>\r\n      </Card>\r\n    </DashboardLayout>\r\n  )\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pages/dashboard/projects/form.jsx b/pages/dashboard/projects/form.jsx
+--- a/pages/dashboard/projects/form.jsx	(revision 77581d14a1df580aca29289ab7b74a265b415b5d)
++++ b/pages/dashboard/projects/form.jsx	(date 1685270517046)
+@@ -1,20 +1,90 @@
+ import DashboardLayout from "@/app/components/layouts/DashboardLayout";
+ import { useState } from "react";
+ import { Card } from "flowbite-react";
++import { AnimatePresence, motion } from "framer-motion";
++import Header from "@/app/components/modules/dashboard/project/create/Header";
++import StepOneForm from "@/app/components/modules/dashboard/project/create/StepOneForm";
++import { useForm } from "react-hook-form";
++
++const formVariants = {
++  initial: {
++    opacity: 0,
++    y: "-5%",
++    display: "none"
++  },
++  visible: {
++    opacity: 1,
++    y: 0,
++    display: "block"
++  },
++  hidden: {
++    opacity: 0,
++    y: "5%",
++    display: "none",
++    transition: {
++      display: {
++        delay: 0.2
++      }
++    }
++  },
++  transition: {
++    duration: 0.2
++  }
++};
++
++const FormProvider = ({ currentStep, step, children }) => {
++  return (
++    <AnimatePresence>
++      <motion.div initial={formVariants.initial} animate={step === currentStep ? formVariants.visible : formVariants.hidden}>
++        {children}
++      </motion.div>
++    </AnimatePresence>
++  );
++};
+ 
+ export default function MultistepForm() {
+-  const [step, setStep] = useState()
++  const [step, setStep] = useState(1);
++  const { register, handleSubmit, formState: {errors}, setValue } = useForm({mode: "onChange"});
++  const [formData, setFormData] = useState({
++    step1: {},
++    step2: {},
++    step3: {}
++  });
++
++  const onSubmitStepOne = (data) => {
++    setFormData((prevData) => ({
++      ...prevData,
++      step1: data
++    }));
++    setStep(2);
++  };
++
++  const onSubmitStepTwo = (data) => {
++    setFormData((prevData) => ({
++      ...prevData,
++      step2: data
++    }));
++    setStep(3);
++  };
++
++  const onSubmitStepThree = (data) => {
++    setFormData((prevData) => ({
++      ...prevData,
++      step3: data
++    }));
++    // Здесь вы можете выполнить отправку данных formData на сервер
++    // или выполнить другую логику, связанную с завершением формы
++    console.log(formData);
++  };
+ 
+   return (
+     <DashboardLayout>
+       <Card>
+-        <div className="flex items-center justify-between">
+-          <div className="flex flex-col gap-2">
+-            <p>Шаг: {step}</p>
+-            <p></p>
+-          </div>
+-        </div>
++        <Header step={step} />
++        <FormProvider step={1} currentStep={step}>
++          <StepOneForm register={register} errors={errors} onSubmit={handleSubmit(onSubmitStepOne)} />
++        </FormProvider>
+       </Card>
+     </DashboardLayout>
+-  )
++  );
+ }
+\ No newline at end of file
+Index: app/components/elements/CustomCheckbox.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/components/elements/CustomCheckbox.jsx b/app/components/elements/CustomCheckbox.jsx
+new file mode 100644
+--- /dev/null	(date 1685272605156)
++++ b/app/components/elements/CustomCheckbox.jsx	(date 1685272605156)
+@@ -0,0 +1,12 @@
++import { Checkbox, Label } from "flowbite-react";
++
++export default function CustomCheckbox({htmlFor, label}) {
++  return (
++    <div className="flex items-center gap-2">
++      <Checkbox id={htmlFor} />
++      <Label htmlFor={htmlFor}>
++        {label}
++      </Label>
++    </div>
++  )
++}
+\ No newline at end of file
+Index: app/components/modules/dashboard/project/create/StepOneForm.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/components/modules/dashboard/project/create/StepOneForm.jsx b/app/components/modules/dashboard/project/create/StepOneForm.jsx
+new file mode 100644
+--- /dev/null	(date 1685276933249)
++++ b/app/components/modules/dashboard/project/create/StepOneForm.jsx	(date 1685276933249)
+@@ -0,0 +1,134 @@
++import { FormGroup } from "@/app/components/modules/FormGroup";
++import { SelectFormGroup } from "@/app/components/modules/SelectFormFroup";
++import React, { useState } from "react";
++import { Label, Radio } from "flowbite-react";
++import CustomCheckbox from "@/app/components/elements/CustomCheckbox";
++import CustomRadio from "@/app/components/elements/CustomRadio";
++
++export default function StepOneForm({ register, errors, onSubmit }) {
++  const organizations = [
++    "Индивидуальное предприятие(ИП)",
++    "Юр. лицо или ООО"
++  ];
++
++  const industries = [
++    "Авиационная промышленность",
++    "Автомобильная промышленность",
++    "Аддитивные технологии",
++    "Деревообрабатывающая",
++    "Кабельная промышленность",
++    "Легкая промышленность",
++    "Медицинская промышленность",
++    "Металлургия и металлообработка",
++    "Научная деятельность",
++    "Общее машиностроение (в т.ч. оборудование пищевой переработки, дорожногстроительная и сельскохозяйственная техника)",
++    "Пищевая промышленность",
++    "Полиграфическая деятельность",
++    "Производство бытовой электроники и электрических приборов",
++    "Производство ж/д транспорта",
++    "Производство кокса и нефтепродуктов",
++    "Производство напитков",
++    "Производство оружия, боеприпасов, спецхимии, военных машин",
++    "Производство прочих товаров народного потребления",
++    "Производство строительных материалов",
++    "Радиоэлектроника и приборостроение",
++    "Станкоинструментальная промышленность",
++    "Судостроение",
++    "Топливно-энергетический комплекс",
++    "Фармацевтическая промышленность",
++    "Химическая промышленность"
++  ];
++
++  const [selectedRadio, setSelectedRadio] = useState('');
++
++  return (
++    <form onSubmit={onSubmit} className="grid lg:grid-cols-2 gap-2">
++      <div className="space-y-3">
++        <FormGroup
++          label="Название проекта"
++          placeholder="Название вашего проекта"
++          htmlFor="name"
++          register={register}
++          conditions={{
++            required: {
++              value: true,
++              message: "Поле Название должно быть обязательно заполнено"
++            }
++          }}
++          errors={errors.name}
++        />
++        <SelectFormGroup
++          label="Организация"
++          htmlFor="organization"
++          register={register}
++          conditions={{
++            required: {
++              value: true,
++              message: "Поле Отрасль должно быть заполнено"
++            }
++          }}
++        >
++          <option value="" selected disabled>Выберите один из вариантов</option>
++          {organizations.map((option) => (
++            <option key={option} value={option}>
++              {option}
++            </option>
++          ))}
++        </SelectFormGroup>
++        <SelectFormGroup
++          htmlFor="industry"
++          label="Отрасль"
++          errors={errors.industry}
++          register={register}
++          conditions={{
++            required: {
++              value: true,
++              message: "Поле Отрасль должно быть заполнено"
++            }
++          }}
++        >
++          <option value="" selected disabled>Выберите один из вариантов</option>
++          {industries.map((option) => (
++            <option key={option} value={option}>
++              {option}
++            </option>
++          ))}
++        </SelectFormGroup>
++        <FormGroup
++          label="Планируемая штатная численность"
++          placeholder="22,7"
++          htmlFor="staff_number"
++          type="number"
++          register={register}
++          isClue={true}
++          clueContent="Среднесписочная численность 75% компаний отрасли составляет не более ХХ.Х чел."
++          conditions={{
++            required: {
++              value: true,
++              message: "Поле Название должно быть обязательно заполнено"
++            }
++          }}
++          errors={errors.stuff_number}
++        />
++        <div>
++          <div className="mb-2 flex items-center justify-between">
++            <Label htmlFor="salary" value="Планируемая средняя зарплата" />
++          </div>
++          <fieldset
++            className="flex flex-col gap-4"
++            id="radio"
++          >
++            <CustomRadio register={register} registerName="stuff" label="Средняя зарплата" htmlFor="middle" checked={false} />
++            <CustomRadio register={register} registerName="stuff" label="Высокая (выше 75% компании отрасли)" htmlFor="high" />
++            <CustomRadio register={register} registerName="stuff" label="Ручной ввод" htmlFor="custom" />
++          </fieldset>
++          {errors.message && (
++            <p className="text-red-600 leading-4 mt-[4px] text-[14px]">
++              {errors.message}
++            </p>
++          )}
++        </div>
++      </div>
++    </form>
++  );
++}
+\ No newline at end of file
+Index: app/components/modules/dashboard/project/create/Header.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/components/modules/dashboard/project/create/Header.jsx b/app/components/modules/dashboard/project/create/Header.jsx
+new file mode 100644
+--- /dev/null	(date 1685272061031)
++++ b/app/components/modules/dashboard/project/create/Header.jsx	(date 1685272061031)
+@@ -0,0 +1,31 @@
++import { AiFillCheckCircle } from "react-icons/ai";
++
++export default function Header({step}) {
++  return (
++    <div className="flex items-center justify-between">
++      <ol
++        className="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
++        <li
++          className={`flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700 ${step === 1 && "text-blue-600 dark:text-blue-500"}`}>
++              <span
++                className="flex items-center gap-1 after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
++                {step === 1 ? <AiFillCheckCircle className="mr-1" /> : <span className="mr-2">1</span>}
++                Основное
++              </span>
++        </li>
++        <li
++          className={`flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700 ${step === 2 && "text-blue-600 dark:text-blue-500"}`}>
++              <span
++                className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
++                  {step === 2 ? <AiFillCheckCircle className="mr-1" /> : <span className="mr-2">2</span>}
++                Объект
++              </span>
++        </li>
++        <li className={`flex items-center ${step === 3 && "text-blue-600 dark:text-blue-500"}`}>
++          {step === 3 ? <AiFillCheckCircle className="mr-1" /> : <span className="mr-2">3</span>}
++          Прочее
++        </li>
++      </ol>
++    </div>
++  )
++}
+\ No newline at end of file
+Index: app/components/elements/CustomRadio.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/components/elements/CustomRadio.jsx b/app/components/elements/CustomRadio.jsx
+new file mode 100644
+--- /dev/null	(date 1685276925914)
++++ b/app/components/elements/CustomRadio.jsx	(date 1685276925914)
+@@ -0,0 +1,28 @@
++import { Label, Radio } from "flowbite-react";
++import React from "react";
++
++export default function CustomRadio({ label, htmlFor, checked = false, register, conditions, errors, registerName, onChange }) {
++  return (
++    <div className="flex flex-col gap-2">
++      <div className="flex items-center gap-2">
++        <Radio
++          defaultChecked={checked}
++          id={htmlFor}
++          name={htmlFor}
++          value={label}
++          onChange={onChange}
++          color={errors && "failure"}
++          {...register(registerName, conditions)}
++        />
++        <Label color={errors && "failure"} htmlFor={htmlFor}>
++          {label}
++        </Label>
++      </div>
++      {errors && (
++        <p className="text-red-600 leading-4 mt-[4px] text-[14px]">
++          {errors.message}
++        </p>
++      )}
++    </div>
++  );
++}
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"f8c84d28-00bb-433f-9ad2-234fe973a0d5\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/pages/dashboard/projects/form/step1.jsx\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/pages/dashboard/projects/form/step2.jsx\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/pages/dashboard/projects/form/step3.jsx\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/pages/temp.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/app/components/modules/FormGroup.jsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/components/modules/FormGroup.jsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package-lock.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/package-lock.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pages/dashboard/projects/form.jsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pages/dashboard/projects/form.jsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pages/dashboard/projects/table.jsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pages/dashboard/projects/table.jsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pages/register.jsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pages/register.jsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/yarn.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/yarn.lock\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"PackageJsonUpdateNotifier\">\r\n    <dismissed value=\"$PROJECT_DIR$/package.json\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2QKTQqMrrVSXIzwLaDrK8kRyF7z\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ASKED_ADD_EXTERNAL_FILES\": \"true\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"ignore.virus.scanning.warn.message\": \"true\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.standard\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.standard\": \"\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"yarn\",\r\n    \"settings.editor.selected.configurable\": \"editing.templates\",\r\n    \"ts.external.directory.path\": \"/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"f8c84d28-00bb-433f-9ad2-234fe973a0d5\" name=\"Changes\" comment=\"\" />\r\n      <created>1685101264194</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1685101264194</updated>\r\n      <workItem from=\"1685101265068\" duration=\"169000\" />\r\n      <workItem from=\"1685102859554\" duration=\"9148000\" />\r\n      <workItem from=\"1685256043912\" duration=\"55000\" />\r\n      <workItem from=\"1685256113583\" duration=\"2588000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"main\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 77581d14a1df580aca29289ab7b74a265b415b5d)
++++ b/.idea/workspace.xml	(date 1685277655415)
+@@ -5,17 +5,16 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="f8c84d28-00bb-433f-9ad2-234fe973a0d5" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/pages/dashboard/projects/form/step1.jsx" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/pages/dashboard/projects/form/step2.jsx" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/pages/dashboard/projects/form/step3.jsx" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/pages/temp.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/app/components/elements/CustomCheckbox.jsx" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/app/components/elements/CustomRadio.jsx" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/app/components/modules/dashboard/project/create/Header.jsx" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/app/components/modules/dashboard/project/create/StepOneForm.jsx" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/app/components/modules/dashboard/project/create/StepThreeForm.jsx" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/app/components/modules/dashboard/project/create/StepTwoForm.jsx" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/components/layouts/DashboardLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/layouts/DashboardLayout.jsx" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/app/components/modules/FormGroup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/modules/FormGroup.jsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/components/modules/dashboard/profile/ResetPasswordForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/modules/dashboard/profile/ResetPasswordForm.jsx" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/pages/dashboard/projects/form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/dashboard/projects/form.jsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pages/dashboard/projects/table.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/dashboard/projects/table.jsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pages/register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/register.jsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -45,8 +44,9 @@
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "WebServerToolWindowFactoryState": "false",
+-    "git-widget-placeholder": "main",
++    "git-widget-placeholder": "templine",
+     "ignore.virus.scanning.warn.message": "true",
++    "last_opened_file_path": "C:/Users/zxvum/Desktop/hkt-front/app/components/modules/dashboard/project/create",
+     "node.js.detected.package.eslint": "true",
+     "node.js.detected.package.standard": "true",
+     "node.js.detected.package.tslint": "true",
+@@ -55,10 +55,15 @@
+     "node.js.selected.package.tslint": "(autodetect)",
+     "nodejs_package_manager_path": "yarn",
+     "settings.editor.selected.configurable": "editing.templates",
+-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
++    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.1.1\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+     "vue.rearranger.settings.migration": "true"
+   }
+ }]]></component>
++  <component name="RecentsManager">
++    <key name="CopyFile.RECENT_KEYS">
++      <recent name="C:\Users\zxvum\Desktop\hkt-front\app\components\modules\dashboard\project\create" />
++    </key>
++  </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+Index: app/components/modules/dashboard/profile/ResetPasswordForm.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { FormGroup } from \"@/app/components/modules/FormGroup\";\r\nimport { Button, Card } from \"flowbite-react\";\r\nimport React from \"react\";\r\nimport { useForm } from \"react-hook-form\";\r\n\r\nexport default function ResetPasswordForm() {\r\n  const {register, formState: {errors}} = useForm({mode: \"onSubmit\"});\r\n\r\n  return (\r\n    <Card>\r\n      <p className=\"text-[22px] font-medium\">Сброс пароля</p>\r\n      <form className=\"space-y-3\">\r\n        <div className=\"flex flex-col gap-3\">\r\n          <FormGroup\r\n            htmlFor=\"last_name\"\r\n            label=\"Фамилия\"\r\n            errors={errors.last_name}\r\n            placeholder=\"Иванов\"\r\n            register={register}\r\n            conditions={{\r\n              required: {\r\n                value: true,\r\n                message: \"Поле Фамилия пользователя должно быть заполнено\",\r\n              },\r\n            }}\r\n          />\r\n\r\n        </div>\r\n        <Button type=\"submit\">Сбросить</Button>\r\n      </form>\r\n    </Card>\r\n  )\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/components/modules/dashboard/profile/ResetPasswordForm.jsx b/app/components/modules/dashboard/profile/ResetPasswordForm.jsx
+--- a/app/components/modules/dashboard/profile/ResetPasswordForm.jsx	(revision 77581d14a1df580aca29289ab7b74a265b415b5d)
++++ b/app/components/modules/dashboard/profile/ResetPasswordForm.jsx	(date 1685262654475)
+@@ -3,7 +3,7 @@
+ import React from "react";
+ import { useForm } from "react-hook-form";
+ 
+-export default function ResetPasswordForm() {
++export default function ResetPasswordFowrm() {
+   const {register, formState: {errors}} = useForm({mode: "onSubmit"});
+ 
+   return (
+Index: app/components/layouts/DashboardLayout.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { motion } from \"framer-motion\";\r\nimport { useState } from \"react\";\r\nimport { FiArchive } from \"react-icons/fi\";\r\nimport { useRouter } from \"next/router\";\r\nimport Logo from \"@/app/components/elements/Logo\";\r\nimport LogoDashboard from \"@/app/components/elements/LogoDashboard\";\r\n\r\nconst bg = {\r\n  visible: {\r\n    opacity: 1,\r\n    display: \"block\",\r\n  },\r\n  hidden: {\r\n    opacity: 0,\r\n    display: \"none\",\r\n    transition: {\r\n      display: {\r\n        delay: 0.3,\r\n      },\r\n    },\r\n  },\r\n  transition: {\r\n    duration: 0.3,\r\n  },\r\n};\r\n\r\nexport default function DashboardLayout({ children }) {\r\n  const [isOpen, setOpen] = useState();\r\n  const router = useRouter();\r\n\r\n  return (\r\n    <div className=\"container\">\r\n      <div className=\"flex items-center w-full justify-between sm:hidden mt-[10px] px-3\">\r\n        <Logo name=\"INM\" />\r\n        <button\r\n          data-drawer-target=\"sidebar-multi-level-sidebar\"\r\n          data-drawer-toggle=\"sidebar-multi-level-sidebar\"\r\n          aria-controls=\"sidebar-multi-level-sidebar\"\r\n          type=\"button\"\r\n          className=\"inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600\"\r\n          onClick={() => setOpen(!isOpen)}\r\n        >\r\n          <span className=\"sr-only\">Open sidebar</span>\r\n          <svg\r\n            className=\"w-6 h-6\"\r\n            aria-hidden=\"true\"\r\n            fill=\"currentColor\"\r\n            viewBox=\"0 0 20 20\"\r\n            xmlns=\"http://www.w3.org/2000/svg\"\r\n          >\r\n            <path\r\n              clipRule=\"evenodd\"\r\n              fillRule=\"evenodd\"\r\n              d=\"M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z\"\r\n            />\r\n          </svg>\r\n        </button>\r\n      </div>\r\n\r\n      <aside\r\n        id=\"sidebar-multi-level-sidebar\"\r\n        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${\r\n          isOpen ? \"transform-none\" : \"-translate-x-full\"\r\n        }`}\r\n        aria-label=\"Sidebar\"\r\n      >\r\n        <div className=\"h-full flex flex-col justify-between px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800\">\r\n          <ul className=\"space-y-2 font-medium\">\r\n            <div className=\"p-2\">\r\n              <LogoDashboard name=\"INM\" />\r\n            </div>\r\n            <li>\r\n              <a\r\n                href=\"/dashboard/projects/table\"\r\n                className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 ${\r\n                  router.pathname === \"/dashboard/projects/table\" &&\r\n                  \"dark:bg-gray-600 bg-gray-200\"\r\n                }`}\r\n              >\r\n                <FiArchive className=\"w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white\" />\r\n                <span className=\"ml-3\">Проекты</span>\r\n              </a>\r\n            </li>\r\n            {/* <CustomDropdown name=\"Профиль\">*/}\r\n            {/*  <li>*/}\r\n            {/*    <a*/}\r\n            {/*      href=\"/\"*/}\r\n            {/*      className=\"flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700\"*/}\r\n            {/*    >*/}\r\n            {/*      Мой профиль*/}\r\n            {/*    </a>*/}\r\n            {/*  </li>*/}\r\n            {/* </CustomDropdown>*/}\r\n          </ul>\r\n          <div className=\"space-y-2\">\r\n            {/* <div>*/}\r\n            {/*  <a*/}\r\n            {/*    href=\"/\"*/}\r\n            {/*    className=\"flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700\"*/}\r\n            {/*  >*/}\r\n            {/*    <svg*/}\r\n            {/*      aria-hidden=\"true\"*/}\r\n            {/*      className=\"w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white\"*/}\r\n            {/*      fill=\"currentColor\"*/}\r\n            {/*      viewBox=\"0 0 20 20\"*/}\r\n            {/*      xmlns=\"http://www.w3.org/2000/svg\"*/}\r\n            {/*    >*/}\r\n            {/*      <path d=\"M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z\" />*/}\r\n            {/*      <path d=\"M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z\" />*/}\r\n            {/*    </svg>*/}\r\n            {/*    <span className=\"ml-3\">Светлая тема</span>*/}\r\n            {/*  </a>*/}\r\n            {/* </div>*/}\r\n            <a\r\n              href=\"/profile\"\r\n              className=\"flex items-center justify-between w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200\"\r\n            >\r\n              <div className=\"flex flex-col\">\r\n                <p>Emili Dress</p>\r\n                <p className=\"text-[14px] text-gray-400\">email@gmail.com</p>\r\n              </div>\r\n              <div className=\"rounded-full flex items-center justify-center h-[44px] w-[44px] bg-gray-300 darkbg-pink-50 bg-opacity-40\">\r\n                <p>ED</p>\r\n              </div>\r\n            </a>\r\n          </div>\r\n        </div>\r\n      </aside>\r\n\r\n      <motion.div\r\n        initial={{ opacity: 0, display: \"none\" }}\r\n        animate={isOpen ? bg.visible : bg.hidden}\r\n        transition={bg.transition}\r\n        className=\"bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30\"\r\n        onClick={() => setOpen(false)}\r\n      />\r\n\r\n      <div className=\"p-4 sm:ml-64\">{children}</div>\r\n    </div>\r\n  );\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/components/layouts/DashboardLayout.jsx b/app/components/layouts/DashboardLayout.jsx
+--- a/app/components/layouts/DashboardLayout.jsx	(revision 77581d14a1df580aca29289ab7b74a265b415b5d)
++++ b/app/components/layouts/DashboardLayout.jsx	(date 1685262689736)
+@@ -112,7 +112,7 @@
+             {/*  </a>*/}
+             {/* </div>*/}
+             <a
+-              href="/profile"
++              href="/dashboard/profile"
+               className="flex items-center justify-between w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
+             >
+               <div className="flex flex-col">
+diff --git a/app/components/modules/dashboard/project/create/StepTwoForm.jsx b/app/components/modules/dashboard/project/create/StepTwoForm.jsx
+new file mode 100644
+diff --git a/app/components/modules/dashboard/project/create/StepThreeForm.jsx b/app/components/modules/dashboard/project/create/StepThreeForm.jsx
+new file mode 100644

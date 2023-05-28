@@ -3,7 +3,7 @@ import { Button, Card } from "flowbite-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-export default function ResetPasswordForm() {
+export default function ResetPasswordFowrm() {
   const {register, formState: {errors}} = useForm({mode: "onSubmit"});
 
   return (

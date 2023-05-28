@@ -112,7 +112,7 @@ export default function DashboardLayout({ children }) {
             {/*  </a>*/}
             {/* </div>*/}
             <a
-              href="/profile"
+              href="/dashboard/profile"
               className="flex items-center justify-between w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
             >
               <div className="flex flex-col">

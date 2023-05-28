@@ -5,23 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8c84d28-00bb-433f-9ad2-234fe973a0d5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/elements/Select.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/modules/SelectFormFroup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/modules/dashboard/profile/OrganizationTab.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/modules/dashboard/profile/ResetPasswordForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/modules/dashboard/profile/UserTab.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/dashboard/profile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/layouts/DashboardLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/layouts/DashboardLayout.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/dashboard/projects/form/step1.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/dashboard/projects/form/step2.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/dashboard/projects/form/step3.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/temp.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/modules/FormGroup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/modules/FormGroup.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/dashboard/projects/form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/dashboard/projects/form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/dashboard/projects/table.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/dashboard/projects/table.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/register.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,6 +27,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectId" id="2QKTQqMrrVSXIzwLaDrK8kRyF7z" />
   <component name="ProjectLevelVcsManager">
@@ -59,7 +55,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
     "settings.editor.selected.configurable": "editing.templates",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.1.1\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -73,11 +69,36 @@
       <updated>1685101264194</updated>
       <workItem from="1685101265068" duration="169000" />
       <workItem from="1685102859554" duration="9148000" />
+      <workItem from="1685256043912" duration="55000" />
+      <workItem from="1685256113583" duration="2588000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
